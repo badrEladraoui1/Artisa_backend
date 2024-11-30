@@ -2,10 +2,7 @@ package com.artisa.artisa.service.impl;
 
 import com.artisa.artisa.dto.LoginDto;
 import com.artisa.artisa.dto.SignUpDto;
-import com.artisa.artisa.entity.Artisan;
-import com.artisa.artisa.entity.Client;
-import com.artisa.artisa.entity.Role;
-import com.artisa.artisa.entity.Utilisateur;
+import com.artisa.artisa.entity.*;
 import com.artisa.artisa.exception.ArtisaException;
 import com.artisa.artisa.repository.RoleRepo;
 import com.artisa.artisa.repository.UtilisateurRepo;
@@ -109,13 +106,15 @@ public class AuthServiceImpl implements AuthService {
             artisan.setMotDePasse(passwordEncoder.encode(signUpDto.motDePasse()));
 
             Set<Role> roles = new HashSet<>();
-            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
+//            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
+            Role userRole = roleRepository.findByName(role.toUpperCase()).get();
+
             roles.add(userRole);
             artisan.setRoles(roles);
 
             utilisateurRepo.save(artisan);
 
-        } else if (role.equals("client")){
+        } else if (role.equals("client")) {
             Client client = new Client();
             client.setNomComplet(signUpDto.nomComplet());
             client.setEmail(signUpDto.email());
@@ -124,16 +123,30 @@ public class AuthServiceImpl implements AuthService {
             client.setMotDePasse(passwordEncoder.encode(signUpDto.motDePasse()));
 
             Set<Role> roles = new HashSet<>();
-            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
+//            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
+            Role userRole = roleRepository.findByName(role.toUpperCase()).get();
             roles.add(userRole);
             client.setRoles(roles);
 
             utilisateurRepo.save(client);
+        }else if (role.equals("admin")){
+            Administrateur admin = new Administrateur();
+            admin.setNomComplet(signUpDto.nomComplet());
+            admin.setEmail(signUpDto.email());
+            admin.setAdresse(signUpDto.address());
+            admin.setMotDePasse(passwordEncoder.encode(signUpDto.motDePasse()));
+            admin.setPhone(signUpDto.phone());
 
+            Set<Role> roles = new HashSet<>();
+//            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
+            Role userRole = roleRepository.findByName(role.toUpperCase()).get();
+            roles.add(userRole);
+            admin.setRoles(roles);
+
+            utilisateurRepo.save(admin);
         }else {
             throw new ArtisaException(HttpStatus.BAD_REQUEST, "Role is not valid!.");
         }
-
         return role + " registered successfully!.";
     }
 }

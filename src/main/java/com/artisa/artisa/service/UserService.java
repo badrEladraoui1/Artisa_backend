@@ -26,15 +26,15 @@ public class UserService {
 //    public void init() {
 //        // Create roles
 //        Role adminRole = new Role();
-//        adminxwRole.setName("ROLE_ADMIN");
+//        adminxwRole.setName("ADMIN");
 //        roleRepository.save(adminRole);
 //
 //        Role clientRole = new Role();
-//        clientRole.setName("ROLE_CLIENT");
+//        clientRole.setName("CLIENT");
 //        roleRepository.save(clientRole);
 //
 //        Role artisanRole = new Role();
-//        artisanRole.setName("ROLE_ARTISAN");
+//        artisanRole.setName("ARTISAN");
 //        roleRepository.save(artisanRole);
 //
 //        // Create users

@@ -5,6 +5,7 @@ import com.artisa.artisa.dto.LoginDto;
 import com.artisa.artisa.dto.SignUpDto;
 import com.artisa.artisa.service.AuthService;
 import com.artisa.artisa.service.JwtService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
@@ -20,18 +21,8 @@ public class AuthController {
         this.authService = authService;
     }
 
-    @GetMapping("/hello")
-    public String hello(){
-        return "Hello";
-    }
-
-    @PostMapping("/test")
-    public String test(){
-        return "Test";
-    }
-
     @PostMapping("/login")
-    public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto){
+    public ResponseEntity<JwtAuthResponse> login(@Valid @RequestBody LoginDto loginDto){
         String token = authService.login(loginDto);
 
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
@@ -41,7 +32,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/{role}")
-    public ResponseEntity<String> signup(@RequestBody SignUpDto signUpDto, @PathVariable String role) {
+    public ResponseEntity<String> signup(@Valid @RequestBody SignUpDto signUpDto, @PathVariable String role) {
         String response = authService.signup(signUpDto, role);
         return ResponseEntity.ok(response);
     }

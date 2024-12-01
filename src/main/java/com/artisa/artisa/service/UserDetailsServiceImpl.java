@@ -16,14 +16,13 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private UtilisateurRepo userRepository;
+    private UtilisateurRepo utilisateurRepo;
 
     @Override
     public UserDetails loadUserByUsername(String nomComplet) throws UsernameNotFoundException {
-        Utilisateur user = userRepository.findByNomComplet(nomComplet);
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
+        Utilisateur user = utilisateurRepo.findByNomComplet(nomComplet)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
         return User.builder()
                 .username(user.getNomComplet())
                 .password(user.getMotDePasse())

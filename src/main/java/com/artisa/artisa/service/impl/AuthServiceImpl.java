@@ -13,7 +13,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -39,33 +38,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(LoginDto loginDto) {
-        try {
-            System.out.println("Attempting login for user: " + loginDto.nomComplet());
+        Utilisateur user = utilisateurRepo.findByNomComplet(loginDto.nomComplet())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
+        if (passwordEncoder.matches(loginDto.motDePasse(), user.getMotDePasse())) {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(
-                            loginDto.nomComplet(),
-                            loginDto.motDePasse()
-                    )
-            );
-
-            System.out.println("Authentication successful for user: " + loginDto.nomComplet());
-
+                    new UsernamePasswordAuthenticationToken(loginDto.nomComplet(), loginDto.motDePasse()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            System.out.println("UserDetails retrieved: " + userDetails.getUsername());
-
-            String token = jwtService.generateToken(userDetails.getUsername());
-            System.out.println("Generated JWT token: " + token);
-
-            return token;
-
-        } catch (Exception e) {
-            System.err.println("Error during login: " + e.getMessage());
-            e.printStackTrace();
-
-            throw new RuntimeException("Login failed: " + e.getMessage());
+            return jwtService.generateToken(user);
+        } else {
+            throw new RuntimeException("Invalid credentials");
         }
     }
 
@@ -78,6 +61,7 @@ public class AuthServiceImpl implements AuthService {
 
         if(role.equals("artisan")){
             Artisan artisan = new Artisan();
+
             artisan.setNomComplet(signUpDto.nomComplet());
             artisan.setEmail(signUpDto.email());
             artisan.setAdresse(signUpDto.address());
@@ -94,6 +78,7 @@ public class AuthServiceImpl implements AuthService {
 
         } else if (role.equals("client")) {
             Client client = new Client();
+
             client.setNomComplet(signUpDto.nomComplet());
             client.setEmail(signUpDto.email());
             client.setAdresse(signUpDto.address());
@@ -108,6 +93,7 @@ public class AuthServiceImpl implements AuthService {
             utilisateurRepo.save(client);
         }else if (role.equals("admin")){
             Administrateur admin = new Administrateur();
+
             admin.setNomComplet(signUpDto.nomComplet());
             admin.setEmail(signUpDto.email());
             admin.setAdresse(signUpDto.address());
@@ -121,7 +107,7 @@ public class AuthServiceImpl implements AuthService {
 
             utilisateurRepo.save(admin);
         }else {
-            throw new ArtisaException(HttpStatus.BAD_REQUEST, "Role is not valid!.");
+            throw new ArtisaException(HttpStatus.BAD_REQUEST, "Something went wrong !!!.");
         }
         return role + " registered successfully!.";
     }

@@ -1,5 +1,6 @@
 package com.artisa.artisa.service;
 
+import com.artisa.artisa.entity.Utilisateur;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
+import java.util.Map;
 
 @Service
 public class JwtService {
@@ -15,12 +17,21 @@ public class JwtService {
     private static final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     private static final long EXPIRATION_TIME = 3600000;
 
-    public String generateToken(String username) {
+    public String generateToken(Utilisateur user) {
+        Map<String, Object> claims = Map.of(
+                "id", user.getId(),
+                "nomComplet", user.getNomComplet(),
+                "email", user.getEmail(),
+                "adresse", user.getAdresse(),
+                "phone", user.getPhone(),
+                "roles", user.getRoles().stream().map(role -> role.getName()).toArray()
+        );
         return Jwts.builder()
-                .setSubject(username)
+                .setClaims(claims)
+                .setSubject(user.getNomComplet())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(secretKey) // Use the secure key for signing
+                .signWith(secretKey)
                 .compact();
     }
 

@@ -16,7 +16,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,24 +37,11 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-//    @Override
-//    public String login(LoginDto loginDto) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(loginDto.nomComplet(), loginDto.motDePasse()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//
-//        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-//        return jwtService.generateToken(userDetails.getUsername());
-//        // returns the token
-//    }
-
     @Override
     public String login(LoginDto loginDto) {
         try {
-            // Log the received login details (but not the password for security)
             System.out.println("Attempting login for user: " + loginDto.nomComplet());
 
-            // Authenticate the user
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             loginDto.nomComplet(),
@@ -63,29 +49,22 @@ public class AuthServiceImpl implements AuthService {
                     )
             );
 
-            // Log successful authentication
             System.out.println("Authentication successful for user: " + loginDto.nomComplet());
 
-            // Set the authentication in the SecurityContext
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            // Extract UserDetails from authentication
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
             System.out.println("UserDetails retrieved: " + userDetails.getUsername());
 
-            // Generate the JWT token
             String token = jwtService.generateToken(userDetails.getUsername());
             System.out.println("Generated JWT token: " + token);
 
-            // Return the token as a response
             return token;
 
         } catch (Exception e) {
-            // Log and rethrow the exception
             System.err.println("Error during login: " + e.getMessage());
             e.printStackTrace();
 
-            // You can throw a custom exception if needed
             throw new RuntimeException("Login failed: " + e.getMessage());
         }
     }
@@ -106,7 +85,6 @@ public class AuthServiceImpl implements AuthService {
             artisan.setMotDePasse(passwordEncoder.encode(signUpDto.motDePasse()));
 
             Set<Role> roles = new HashSet<>();
-//            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
             Role userRole = roleRepository.findByName(role.toUpperCase()).get();
 
             roles.add(userRole);
@@ -123,7 +101,6 @@ public class AuthServiceImpl implements AuthService {
             client.setMotDePasse(passwordEncoder.encode(signUpDto.motDePasse()));
 
             Set<Role> roles = new HashSet<>();
-//            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
             Role userRole = roleRepository.findByName(role.toUpperCase()).get();
             roles.add(userRole);
             client.setRoles(roles);
@@ -138,7 +115,6 @@ public class AuthServiceImpl implements AuthService {
             admin.setPhone(signUpDto.phone());
 
             Set<Role> roles = new HashSet<>();
-//            Role userRole = roleRepository.findByName("ROLE_" + role.toUpperCase()).get();
             Role userRole = roleRepository.findByName(role.toUpperCase()).get();
             roles.add(userRole);
             admin.setRoles(roles);

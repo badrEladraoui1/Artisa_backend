@@ -22,6 +22,8 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+// i did this just for populating the first users in the database now is commented
+
 //    @PostConstruct
 //    public void init() {
 //        // Create roles
@@ -57,4 +59,5 @@ public class UserService {
 //        artisan.setRoles(new HashSet<>(Set.of(artisanRole)));
 //        userRepository.save(artisan);
 //    }
+
 }

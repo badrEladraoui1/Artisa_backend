@@ -1,7 +1,7 @@
 package com.artisa.artisa.entity;
 
 
-import com.artisa.artisa.enums.Status;
+import com.artisa.artisa.enums.StatusService;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,7 +22,7 @@ public class Reservation {
     private Date date;
     private double montant;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private StatusService status;
 
     @ManyToOne
     private Client client;

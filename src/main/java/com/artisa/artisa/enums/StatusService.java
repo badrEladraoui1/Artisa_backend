@@ -1,6 +1,6 @@
 package com.artisa.artisa.enums;
 
-public enum Status {
+public enum StatusService {
     EN_ATTENTE, CONFIRMEE, ANNULEE, TERMINEE
 }
 

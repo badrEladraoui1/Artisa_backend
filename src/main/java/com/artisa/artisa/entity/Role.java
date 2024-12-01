@@ -21,10 +21,4 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     private Set<Utilisateur> users;
-
-//    @ManyToMany(mappedBy = "roles")
-//    private Set<Client> clients;
-//
-//    @ManyToMany(mappedBy = "roles")
-//    private Set<Artisan> artisans;
 }

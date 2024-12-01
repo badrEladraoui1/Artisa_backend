@@ -1,7 +1,6 @@
 package com.artisa.artisa.config;
 
 import com.artisa.artisa.filter.JwtAuthenticationFilter;
-import com.artisa.artisa.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +23,12 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final UserDetailsServiceImpl userDetailsService;
 
     // Constructor injection instead of @Autowired
     public SecurityConfig(
-            JwtAuthenticationFilter jwtAuthenticationFilter,
-            UserDetailsServiceImpl userDetailsService
+            JwtAuthenticationFilter jwtAuthenticationFilter
     ) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.userDetailsService = userDetailsService;
     }
 
     @Bean
@@ -49,13 +45,12 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())  // Explicitly disable CORS if needed
+                .cors(cors -> cors.disable())
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/hello").permitAll()
                         .requestMatchers("/auth/test").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/signup/**").permitAll()
-//                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->
@@ -66,7 +61,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Optional: Add CORS configuration
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -79,66 +73,3 @@ public class SecurityConfig {
         return source;
     }
 }
-
-
-//package com.artisa.artisa.config;
-//
-//import com.artisa.artisa.filter.JwtAuthenticationFilter;
-//import com.artisa.artisa.service.UserDetailsServiceImpl;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.http.HttpMethod;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.web.SecurityFilterChain;
-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-//
-//
-//@Configuration
-//@EnableWebSecurity
-//public class SecurityConfig {
-//
-//    @Autowired
-//    private JwtAuthenticationFilter jwtAuthenticationFilter;
-//
-//    @Autowired
-//    private UserDetailsServiceImpl userDetailsService;
-//
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .authorizeHttpRequests(authorizeRequests ->
-//                        authorizeRequests
-//                                .requestMatchers("/auth/**").permitAll()
-//                                .anyRequest().authenticated()
-//                )
-//                .sessionManagement(sessionManagement ->
-//                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                );
-//
-//        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-//
-//        return http.build();
-//    }
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http, PasswordEncoder passwordEncoder, UserDetailsServiceImpl userDetailsService) throws Exception {
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userDetailsService)
-//                .passwordEncoder(passwordEncoder)
-//                .and()
-//                .build();
-//    }
-//}

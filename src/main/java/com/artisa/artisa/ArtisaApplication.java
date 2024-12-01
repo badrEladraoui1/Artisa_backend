@@ -12,9 +12,4 @@ public class ArtisaApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ArtisaApplication.class, args);
 	}
-//	 @Bean
-//	 public PasswordEncoder passwordEncoder() {
-//	 	return new BCryptPasswordEncoder();
-//	 }
-
 }

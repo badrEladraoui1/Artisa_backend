@@ -28,7 +28,7 @@ public class UserService {
 //    public void init() {
 //        // Create roles
 //        Role adminRole = new Role();
-//        adminxwRole.setName("ADMIN");
+//        adminRole.setName("ADMIN");
 //        roleRepository.save(adminRole);
 //
 //        Role clientRole = new Role();
@@ -43,18 +43,25 @@ public class UserService {
 //        Administrateur admin = new Administrateur();
 //        admin.setNomComplet("admin");
 //        admin.setUsername("adminUsername");
+//        admin.setEmail("email@example.com");
+//        admin.setPhone("1234567890");
 //        admin.setMotDePasse(passwordEncoder.encode("admin"));
 //        admin.setRoles(new HashSet<>(Set.of(adminRole)));
 //        userRepository.save(admin);
 //
 //        Client client = new Client();
 //        client.setNomComplet("client");
+//        client.setEmail("email@example.com");
+//        client.setPhone("1234567890");
 //        client.setMotDePasse(passwordEncoder.encode("client"));
 //        client.setRoles(new HashSet<>(Set.of(clientRole)));
 //        userRepository.save(client);
 //
 //        Artisan artisan = new Artisan();
 //        artisan.setNomComplet("artisan");
+//        artisan.setEmail("email@example.com");
+//        artisan.setPhone("1234567890");
+//        artisan.setMetier("PLUMBING");
 //        artisan.setMotDePasse(passwordEncoder.encode("artisan"));
 //        artisan.setRoles(new HashSet<>(Set.of(artisanRole)));
 //        userRepository.save(artisan);

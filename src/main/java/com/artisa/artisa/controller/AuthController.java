@@ -1,8 +1,6 @@
 package com.artisa.artisa.controller;
 
-import com.artisa.artisa.dto.JwtAuthResponse;
-import com.artisa.artisa.dto.LoginDto;
-import com.artisa.artisa.dto.SignUpDto;
+import com.artisa.artisa.dto.*;
 import com.artisa.artisa.service.AuthService;
 import com.artisa.artisa.service.JwtService;
 import jakarta.validation.Valid;
@@ -31,9 +29,21 @@ public class AuthController {
         return ResponseEntity.ok(jwtAuthResponse);
     }
 
-    @PostMapping("/signup/{role}")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignUpDto signUpDto, @PathVariable String role) {
-        String response = authService.signup(signUpDto, role);
+    @PostMapping("/signup/artisan")
+    public ResponseEntity<String> signup(@Valid @RequestBody SignUpDtoArtisan signUpDto) {
+        String response = authService.signup(signUpDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/signup/client")
+    public ResponseEntity<String> signup(@Valid @RequestBody SignUpDtoClient signUpDto) {
+        String response = authService.signup(signUpDto);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/signup/admin")
+    public ResponseEntity<String> signup(@Valid @RequestBody SignupDtoAdmin signUpDto) {
+        String response = authService.signup(signUpDto);
         return ResponseEntity.ok(response);
     }
 }

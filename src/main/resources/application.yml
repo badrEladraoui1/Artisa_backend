@@ -2,7 +2,6 @@ spring:
   application:
     name: artisa
 
-
   datasource:
     url: jdbc:postgresql://localhost:5432/artisa
     username: postgres
@@ -20,3 +19,7 @@ jwt:
   expiration: 3600000
   header: Authorization
   prefix: Bearer
+
+server:
+  servlet:
+    context-path: /api

@@ -1,10 +1,14 @@
 package com.artisa.artisa.service;
 
 import com.artisa.artisa.dto.LoginDto;
-import com.artisa.artisa.dto.SignUpDto;
+import com.artisa.artisa.dto.SignUpDtoArtisan;
+import com.artisa.artisa.dto.SignUpDtoClient;
+import com.artisa.artisa.dto.SignupDtoAdmin;
 
 public interface AuthService {
 
     String login(LoginDto loginDto);
-    String signup(SignUpDto signUpDto, String role);
+    String signup(SignUpDtoArtisan signUpDtoArtisan);
+    String signup(SignUpDtoClient signUpDtoClient);
+    String signup(SignupDtoAdmin signupDtoAdmin);
 }

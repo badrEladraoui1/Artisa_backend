@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-public record SignUpDto (
+public record SignUpDtoArtisan(
     @NotBlank(message = "Nom complet is required.")
      String nomComplet,
 
@@ -18,5 +18,12 @@ public record SignUpDto (
      String motDePasse,
 
     @Size(max = 100, message = "Address must not exceed 100 characters.")
-     String address
+     String address,
+
+//    MetierCategories metier,
+    String metier,
+
+    @NotBlank(message = "a small description is required.")
+    String description
+
 ){}

@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# add application.yml to gitignore
+src/main/resources/application.yml
+
+
 ### STS ###
 .apt_generated
 .classpath

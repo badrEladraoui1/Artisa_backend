@@ -40,17 +40,21 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String login(LoginDto loginDto) {
-        Utilisateur user = utilisateurRepo.findByNomComplet(loginDto.nomComplet())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        try {
+            Utilisateur user = utilisateurRepo.findByNomComplet(loginDto.nomComplet())
+                    .orElseThrow(() -> new ArtisaException(HttpStatus.UNAUTHORIZED, "Invalid username or password"));
 
-        if (passwordEncoder.matches(loginDto.motDePasse(), user.getMotDePasse())) {
+            if (!passwordEncoder.matches(loginDto.motDePasse(), user.getMotDePasse())) {
+                throw new ArtisaException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
+            }
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginDto.nomComplet(), loginDto.motDePasse()));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             return jwtService.generateToken(user);
-        } else {
-            throw new RuntimeException("Invalid credentials");
+        } catch (Exception e) {
+            throw new ArtisaException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
     }
 

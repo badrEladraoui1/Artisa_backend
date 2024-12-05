@@ -4,14 +4,14 @@ import com.artisa.artisa.enums.MetierCategories;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "artisan")
@@ -26,6 +26,9 @@ public class Artisan extends Utilisateur {
     private String metier;
 
     private String portfolio;
+
+    @Column(name = "profile_picture_file_name")
+    private String profilePictureFileName;
 
     @Size(max = 100, message = "Description must not exceed 100 characters.")
     private String description;

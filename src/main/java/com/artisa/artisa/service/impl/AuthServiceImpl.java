@@ -29,13 +29,15 @@ public class AuthServiceImpl implements AuthService {
     UtilisateurRepo utilisateurRepo;
     RoleRepo roleRepository;
     PasswordEncoder passwordEncoder;
+    FileStorageService fileStorageService;
 
-    public AuthServiceImpl(JwtService jwtService, AuthenticationManager authenticationManager , RoleRepo roleRepo , PasswordEncoder passwordEncoder ,     UtilisateurRepo utilisateurRepo) {
+    public AuthServiceImpl(JwtService jwtService, AuthenticationManager authenticationManager , RoleRepo roleRepo , PasswordEncoder passwordEncoder , UtilisateurRepo utilisateurRepo , FileStorageService fileStorageService) {
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
         this.utilisateurRepo = utilisateurRepo;
         this.roleRepository = roleRepo;
         this.passwordEncoder = passwordEncoder;
+        this.fileStorageService = fileStorageService;
     }
 
     @Override
@@ -99,6 +101,7 @@ public class AuthServiceImpl implements AuthService {
             admin.setMotDePasse(passwordEncoder.encode(signupDtoAdmin.motDePasse()));
             admin.setPhone(signupDtoAdmin.phone());
 
+
             Set<Role> roles = new HashSet<>();
             Role userRole = roleRepository.findByName("ADMIN").get();
             roles.add(userRole);
@@ -128,6 +131,15 @@ public class AuthServiceImpl implements AuthService {
             artisan.setMotDePasse(passwordEncoder.encode(signUpDtoArtisan.motDePasse()));
             artisan.setMetier(signUpDtoArtisan.metier());
             artisan.setDescription(signUpDtoArtisan.description());
+
+//             Handle profile picture if provided
+            if (signUpDtoArtisan.profilePicture() != null && !signUpDtoArtisan.profilePicture().isEmpty()) {
+                String fileName = fileStorageService.storeFile(
+                        signUpDtoArtisan.profilePicture(),
+                        signUpDtoArtisan.nomComplet()
+                );
+                artisan.setProfilePictureFileName(fileName);
+            }
 
             Set<Role> roles = new HashSet<>();
             Role userRole = roleRepository.findByName("ARTISAN").get();

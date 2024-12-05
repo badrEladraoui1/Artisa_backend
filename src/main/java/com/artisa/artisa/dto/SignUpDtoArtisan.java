@@ -3,6 +3,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import org.springframework.web.multipart.MultipartFile;
 
 public record SignUpDtoArtisan(
     @NotBlank(message = "Nom complet is required.")
@@ -24,6 +25,8 @@ public record SignUpDtoArtisan(
     String metier,
 
     @NotBlank(message = "a small description is required.")
-    String description
+    String description,
+
+    MultipartFile profilePicture
 
 ){}

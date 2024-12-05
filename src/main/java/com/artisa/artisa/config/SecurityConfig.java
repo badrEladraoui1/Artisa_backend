@@ -47,10 +47,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.disable())
                 .authorizeHttpRequests(authz -> authz
-                        .requestMatchers("/auth/hello").permitAll()
-                        .requestMatchers("/auth/test").permitAll()
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/signup/**").permitAll()
+                        .requestMatchers("/artisans/*/profile-picture").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

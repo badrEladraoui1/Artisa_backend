@@ -30,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/artisan")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignUpDtoArtisan signUpDto) {
+    public ResponseEntity<String> signup(@Valid @ModelAttribute SignUpDtoArtisan signUpDto) {
         String response = authService.signup(signUpDto);
         return ResponseEntity.ok(response);
     }

@@ -51,6 +51,8 @@ public class SecurityConfig {
                         .requestMatchers("/auth/signup/**").permitAll()
                         .requestMatchers("/artisans/*/profile-picture").permitAll()
                         .requestMatchers("/artisans/{id}/profile").permitAll()
+                        .requestMatchers("/artisans/{id}/details").permitAll()
+                        .requestMatchers("/artisans/all").permitAll()
                         .requestMatchers("/services/artisan/{artisanId}").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers("/images/service-pictures/**").permitAll()

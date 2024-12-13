@@ -30,5 +30,8 @@ server:
   servlet:
     context-path: /api
 
+#file:
+#  upload-dir: ./uploads/profile-pictures
+
 file:
-  upload-dir: ./uploads/profile-pictures
+  upload-dir: ./uploads

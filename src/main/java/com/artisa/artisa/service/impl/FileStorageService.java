@@ -2,6 +2,7 @@
 package com.artisa.artisa.service.impl;
 
 import com.artisa.artisa.exception.ArtisaException;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -17,6 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+@Getter
 @Service
 public class FileStorageService {
     private final Path fileStorageLocation;
@@ -33,20 +35,23 @@ public class FileStorageService {
         }
     }
 
-    public String storeFile(MultipartFile file, String userId) {
+    public String storeFile(MultipartFile file, String userId, String directory) {
         String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
         String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
         String fileName = userId + "_" + System.currentTimeMillis() + fileExtension;
 
         try {
-            // Check if the file's name contains invalid characters
             if (fileName.contains("..")) {
                 throw new ArtisaException(HttpStatus.BAD_REQUEST,
                         "Filename contains invalid path sequence");
             }
 
-            // Copy file to the target location
-            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+            // Create directory if it doesn't exist
+            Path directoryPath = this.fileStorageLocation.resolve(directory);
+            Files.createDirectories(directoryPath);
+
+            // Copy file to the target location (inside the specified directory)
+            Path targetLocation = directoryPath.resolve(fileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
@@ -56,9 +61,33 @@ public class FileStorageService {
         }
     }
 
-    public Resource loadFileAsResource(String fileName) {
+
+//    public String storeFile(MultipartFile file, String userId) {
+//        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
+//        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+//        String fileName = userId + "_" + System.currentTimeMillis() + fileExtension;
+//
+//        try {
+//            // Check if the file's name contains invalid characters
+//            if (fileName.contains("..")) {
+//                throw new ArtisaException(HttpStatus.BAD_REQUEST,
+//                        "Filename contains invalid path sequence");
+//            }
+//
+//            // Copy file to the target location
+//            Path targetLocation = this.fileStorageLocation.resolve(fileName);
+//            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+//
+//            return fileName;
+//        } catch (IOException ex) {
+//            throw new ArtisaException(HttpStatus.INTERNAL_SERVER_ERROR,
+//                    "Could not store file " + fileName);
+//        }
+//    }
+
+    public Resource loadFileAsResource(String fileName, String directory) {
         try {
-            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+            Path filePath = this.fileStorageLocation.resolve(directory).resolve(fileName).normalize();
             Resource resource = new UrlResource(filePath.toUri());
 
             if(resource.exists()) {
@@ -70,4 +99,19 @@ public class FileStorageService {
             throw new ArtisaException(HttpStatus.NOT_FOUND, "File not found");
         }
     }
+
+//    public Resource loadFileAsResource(String fileName) {
+//        try {
+//            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
+//            Resource resource = new UrlResource(filePath.toUri());
+//
+//            if(resource.exists()) {
+//                return resource;
+//            } else {
+//                throw new ArtisaException(HttpStatus.NOT_FOUND, "File not found");
+//            }
+//        } catch (MalformedURLException ex) {
+//            throw new ArtisaException(HttpStatus.NOT_FOUND, "File not found");
+//        }
+//    }
 }

@@ -136,7 +136,8 @@ public class AuthServiceImpl implements AuthService {
             if (signUpDtoArtisan.profilePicture() != null && !signUpDtoArtisan.profilePicture().isEmpty()) {
                 String fileName = fileStorageService.storeFile(
                         signUpDtoArtisan.profilePicture(),
-                        signUpDtoArtisan.nomComplet()
+                        signUpDtoArtisan.nomComplet(),
+                        "profile-pictures"
                 );
                 artisan.setProfilePictureFileName(fileName);
             }

@@ -53,14 +53,4 @@ public class FileController {
                 return MediaType.APPLICATION_OCTET_STREAM;
         }
     }
-
-//    @GetMapping("/{fileName:.+}")
-//    public ResponseEntity<Resource> getImage(@PathVariable String fileName) {
-//        Resource resource = fileStorageService.loadFileAsResource(fileName);
-//
-//        return ResponseEntity.ok()
-//                .contentType(MediaType.IMAGE_JPEG)
-//                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + resource.getFilename() + "\"")
-//                .body(resource);
-//    }
 }

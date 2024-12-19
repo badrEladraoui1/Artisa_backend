@@ -1,32 +1,60 @@
 package com.artisa.artisa.entity;
 
-
-import com.artisa.artisa.enums.StatusService;
+import com.artisa.artisa.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Table(name = "reservation")
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private Date date;
-    private double montant;
-    @Enumerated(EnumType.STRING)
-    private StatusService status;
-
     @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     @ManyToOne
+    @JoinColumn(name = "artisan_id", nullable = false)
+    private Artisan artisan;
+
+    @ManyToOne
+    @JoinColumn(name = "service_id", nullable = false)
     private Service service;
+
+//    @Enumerated(EnumType.STRING)
+//    @Column(nullable = false)
+//    private ReservationStatus status = ReservationStatus.PENDING;
+
+    @Column(nullable = false)
+    private String status = "PENDING";  // Default value
+
+    @Column(name = "date_creation")
+    private LocalDateTime dateCreation;
+
+    @Column(name = "date_modification")
+    private LocalDateTime dateModification;
+
+    private String notes;  // Optional notes from client or artisan
+
+    @Column(nullable = false)
+    private Double montant; // Add this field
+
+    @PrePersist
+    protected void onCreate() {
+        dateCreation = LocalDateTime.now();
+        dateModification = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        dateModification = LocalDateTime.now();
+    }
 }

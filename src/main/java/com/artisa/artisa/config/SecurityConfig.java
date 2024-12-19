@@ -49,7 +49,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers("/auth/login").permitAll()
                         .requestMatchers("/auth/signup/**").permitAll()
+                        .requestMatchers("/auth/signup/artisan").permitAll()
+                        .requestMatchers("/auth/signup/client").permitAll()
+                        .requestMatchers("/auth/signup/admin").permitAll()
                         .requestMatchers("/artisans/*/profile-picture").permitAll()
+                        .requestMatchers("/clients/*/profile-picture").permitAll()
                         .requestMatchers("/artisans/{id}/profile").permitAll()
                         .requestMatchers("/artisans/{id}/details").permitAll()
                         .requestMatchers("/artisans/all").permitAll()
@@ -58,6 +62,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/service-pictures/**").permitAll()
                         .requestMatchers("/images/profile-pictures/**").permitAll()
                         .requestMatchers("/services/**").permitAll()
+                        .requestMatchers("/reservations/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

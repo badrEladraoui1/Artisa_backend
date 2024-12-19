@@ -7,6 +7,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -16,7 +17,12 @@ import java.util.List;
 @NoArgsConstructor
 @Table(name = "client")
 public class Client extends Utilisateur {
+    @ToString.Exclude
     @OneToMany(mappedBy = "client")
+
     @Column(name = "historique_reservations")
     private List<Reservation> historiqueReservations;
+
+    @Column(name = "profile_picture_file_name")
+    private String profilePictureFileName;
 }

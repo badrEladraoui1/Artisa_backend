@@ -62,29 +62,6 @@ public class FileStorageService {
     }
 
 
-//    public String storeFile(MultipartFile file, String userId) {
-//        String originalFileName = StringUtils.cleanPath(file.getOriginalFilename());
-//        String fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
-//        String fileName = userId + "_" + System.currentTimeMillis() + fileExtension;
-//
-//        try {
-//            // Check if the file's name contains invalid characters
-//            if (fileName.contains("..")) {
-//                throw new ArtisaException(HttpStatus.BAD_REQUEST,
-//                        "Filename contains invalid path sequence");
-//            }
-//
-//            // Copy file to the target location
-//            Path targetLocation = this.fileStorageLocation.resolve(fileName);
-//            Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
-//
-//            return fileName;
-//        } catch (IOException ex) {
-//            throw new ArtisaException(HttpStatus.INTERNAL_SERVER_ERROR,
-//                    "Could not store file " + fileName);
-//        }
-//    }
-
     public Resource loadFileAsResource(String fileName, String directory) {
         try {
             Path filePath = this.fileStorageLocation.resolve(directory).resolve(fileName).normalize();
@@ -100,18 +77,4 @@ public class FileStorageService {
         }
     }
 
-//    public Resource loadFileAsResource(String fileName) {
-//        try {
-//            Path filePath = this.fileStorageLocation.resolve(fileName).normalize();
-//            Resource resource = new UrlResource(filePath.toUri());
-//
-//            if(resource.exists()) {
-//                return resource;
-//            } else {
-//                throw new ArtisaException(HttpStatus.NOT_FOUND, "File not found");
-//            }
-//        } catch (MalformedURLException ex) {
-//            throw new ArtisaException(HttpStatus.NOT_FOUND, "File not found");
-//        }
-//    }
 }

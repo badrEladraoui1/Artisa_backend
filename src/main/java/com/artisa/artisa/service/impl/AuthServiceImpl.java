@@ -76,6 +76,16 @@ public class AuthServiceImpl implements AuthService {
             client.setPhone(signUpDtoClient.phone());
             client.setMotDePasse(passwordEncoder.encode(signUpDtoClient.motDePasse()));
 
+            // Handle profile picture if provided
+            if (signUpDtoClient.profilePicture() != null && !signUpDtoClient.profilePicture().isEmpty()) {
+                String fileName = fileStorageService.storeFile(
+                        signUpDtoClient.profilePicture(),
+                        signUpDtoClient.nomComplet(),
+                        "profile-pictures"
+                );
+                client.setProfilePictureFileName(fileName);
+            }
+
             Set<Role> roles = new HashSet<>();
             Role userRole = roleRepository.findByName("CLIENT").get();
             System.out.println("userRole = " + userRole);

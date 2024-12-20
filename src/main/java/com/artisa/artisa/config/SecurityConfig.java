@@ -63,6 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/profile-pictures/**").permitAll()
                         .requestMatchers("/services/**").permitAll()
                         .requestMatchers("/reservations/**").permitAll()
+                        .requestMatchers("/transactions/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session ->

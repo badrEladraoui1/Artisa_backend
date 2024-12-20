@@ -1,7 +1,5 @@
 package com.artisa.artisa.dto;
 
-import com.artisa.artisa.enums.ReservationStatus;
-
 import java.time.LocalDateTime;
 
 public record ReservationResponseDto(
@@ -13,5 +11,6 @@ public record ReservationResponseDto(
         String status,
         LocalDateTime dateCreation,
         LocalDateTime dateModification,
-        String notes
-) {}
+        String notes,
+        LocalDateTime proposedCompletionDate
+        ) {}

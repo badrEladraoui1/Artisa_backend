@@ -47,6 +47,9 @@ public class Reservation {
     @Column(nullable = false)
     private Double montant; // Add this field
 
+    @Column(name = "proposed_completion_date")
+    private LocalDateTime proposedCompletionDate;
+
     @PrePersist
     protected void onCreate() {
         dateCreation = LocalDateTime.now();

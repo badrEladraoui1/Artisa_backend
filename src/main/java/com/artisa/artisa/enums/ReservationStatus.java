@@ -4,5 +4,8 @@ public enum ReservationStatus {
     PENDING,
     IN_PROGRESS,
     COMPLETED,
-    CANCELED
+    CANCELED,
+    SUGGESTED_BY_ARTISAN,
+    ACCEPTED,
+    DECLINED
 }

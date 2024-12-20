@@ -62,11 +62,25 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservationsByStatus(token, clientId, "COMPLETED"));
     }
 
+    @GetMapping("/client/{clientId}/accepted")
+    public ResponseEntity<List<ReservationResponseDto>> getClientAcceptedReservations(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer clientId) {
+        return ResponseEntity.ok(reservationService.getReservationsByStatus(token, clientId, "ACCEPTED"));
+    }
+
     @GetMapping("/client/{clientId}/canceled")
     public ResponseEntity<List<ReservationResponseDto>> getClientCanceledReservations(
             @RequestHeader("Authorization") String token,
             @PathVariable Integer clientId) {
         return ResponseEntity.ok(reservationService.getReservationsByStatus(token, clientId, "CANCELED"));
+    }
+
+    @GetMapping("/client/{clientId}/suggested_by_artisan")
+    public ResponseEntity<List<ReservationResponseDto>> getClientSuggestedByArtisandReservations(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer clientId) {
+        return ResponseEntity.ok(reservationService.getReservationsByStatus(token, clientId, "SUGGESTED_BY_ARTISAN"));
     }
 
     @GetMapping("/{reservationId}")

@@ -58,6 +58,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservation.setArtisan(artisan);
         reservation.setService(service);
         reservation.setNotes(dto.notes());
+        reservation.setProposedCompletionDate(dto.proposedCompletionDate());
         reservation.setMontant(service.getTarif()); // Set amount from service price
         reservation.setStatus("PENDING"); // Set initial status
 
@@ -121,7 +122,8 @@ public class ReservationServiceImpl implements ReservationService {
                 reservation.getStatus(),
                 reservation.getDateCreation(),
                 reservation.getDateModification(),
-                reservation.getNotes()
+                reservation.getNotes(),
+                reservation.getProposedCompletionDate() // i just added this line
         );
     }
 }

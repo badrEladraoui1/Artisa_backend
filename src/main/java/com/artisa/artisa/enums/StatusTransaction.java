@@ -1,5 +1,9 @@
 package com.artisa.artisa.enums;
 
+// StatusTransaction.java
 public enum StatusTransaction {
-    EN_ATTENTE, CONFIRMEE, ANNULEE, REMBOURSEE
+    PENDING,
+    COMPLETED,
+    FAILED,
+    REFUNDED
 }

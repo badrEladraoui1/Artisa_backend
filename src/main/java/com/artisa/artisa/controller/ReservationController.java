@@ -76,6 +76,13 @@ public class ReservationController {
         return ResponseEntity.ok(reservationService.getReservationsByStatus(token, clientId, "CANCELED"));
     }
 
+    @GetMapping("/client/{clientId}/inprogress")
+    public ResponseEntity<List<ReservationResponseDto>> getClientInProgressReservations(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer clientId) {
+        return ResponseEntity.ok(reservationService.getReservationsByStatus(token, clientId, "IN_PROGRESS"));
+    }
+
     @GetMapping("/client/{clientId}/suggested_by_artisan")
     public ResponseEntity<List<ReservationResponseDto>> getClientSuggestedByArtisandReservations(
             @RequestHeader("Authorization") String token,

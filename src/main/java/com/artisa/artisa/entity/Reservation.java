@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -49,6 +51,24 @@ public class Reservation {
 
     @Column(name = "proposed_completion_date")
     private LocalDateTime proposedCompletionDate;
+
+    @Column(name = "client_confirmed")
+    private Boolean clientConfirmed = false;
+
+    @Column(name = "artisan_confirmed")
+    private Boolean artisanConfirmed = false;
+
+    @Column(name = "completion_date")
+    private LocalDateTime completionDate;
+
+    @OneToMany(mappedBy = "reservation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Review> reviews = new ArrayList<>();
+
+    // Method to add a review
+    public void addReview(Review review) {
+        reviews.add(review);
+        review.setReservation(this);
+    }
 
     @PrePersist
     protected void onCreate() {

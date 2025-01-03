@@ -1,8 +1,6 @@
 package com.artisa.artisa.controller;
 
-import com.artisa.artisa.dto.CreateReservationDto;
-import com.artisa.artisa.dto.ReservationResponseDto;
-import com.artisa.artisa.dto.UpdateReservationStatusDto;
+import com.artisa.artisa.dto.*;
 import com.artisa.artisa.service.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -95,5 +93,50 @@ public class ReservationController {
             @RequestHeader("Authorization") String token,
             @PathVariable Integer reservationId) {
         return ResponseEntity.ok(reservationService.getReservationById(token, reservationId));
+    }
+
+    @PostMapping("/{reservationId}/confirm-completion/{userType}")
+    public ResponseEntity<CompletionConfirmationDto> confirmCompletion(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer reservationId,
+            @PathVariable String userType
+    ) {
+        return ResponseEntity.ok(
+                reservationService.confirmCompletion(token, reservationId, userType)
+        );
+    }
+
+    @PostMapping("/{reservationId}/review")
+    public ResponseEntity<ReservationResponseDto> submitReview(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer reservationId,
+            @RequestBody ReviewDto review
+    ) {
+        return ResponseEntity.ok(
+                reservationService.submitReview(token, reservationId, review)
+        );
+    }
+
+    @GetMapping("/artisan/{artisanId}/reviews")
+    public ResponseEntity<List<ReviewDto>> getArtisanReviews(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer artisanId) {
+        return ResponseEntity.ok(reservationService.getArtisanReviews(token, artisanId));
+    }
+
+    @GetMapping("/artisan/{artisanId}/average-rating")
+    public ResponseEntity<Double> getArtisanAverageRating(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer artisanId) {
+        return ResponseEntity.ok(reservationService.getArtisanAverageRating(token, artisanId));
+    }
+
+    @GetMapping("/artisan/{artisanId}/completed-reviews")
+    public ResponseEntity<List<ReviewDto>> getArtisanCompletedReviews(
+            @RequestHeader("Authorization") String token,
+            @PathVariable Integer artisanId) {
+        return ResponseEntity.ok(
+                reservationService.getArtisanCompletedReviewedReservations(token, artisanId)
+        );
     }
 }
